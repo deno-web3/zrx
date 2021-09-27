@@ -12,12 +12,13 @@ export type SwapOptions = {
   from: string
   to: string
   amount: number
+} & Partial<{
   slippage: string
   takerAddress: string
   affiliateAddress: string
   feeRecipient: string
   tokenFee: string
-}
+}>
 
 export type SwapTransaction = {
   price: string
@@ -48,6 +49,7 @@ export class Zrx {
 
   constructor(network: Network = 'mainnet') {
     this.network = network
+    this.base = endpoints[network]
   }
   switchNetwork(network: Network) {
     this.network = network
@@ -58,14 +60,12 @@ export class Zrx {
 
     return (await res.json()).records
   }
-  async quote({ from, to, amount, slippage, ...opts }: SwapOptions): Promise<SwapTransaction> {
+  async quote({ from, to, amount, ...opts }: SwapOptions): Promise<SwapTransaction> {
     const params = new URLSearchParams({
       ...opts,
       buyToken: to,
       sellToken: from,
-      sellAmount: amount.toString(),
-      slippagePercentage: slippage,
-      buyTokenPercentageFee: opts.tokenFee
+      sellAmount: amount.toString()
     })
 
     const res = await fetch(`${this.base}/swap/v1/quote?${params.toString()}`)
@@ -86,14 +86,12 @@ export class Zrx {
 
     return records
   }
-  async price({ from, to, amount, slippage, ...opts }: SwapOptions): Promise<SwapTransaction> {
+  async price({ from, to, amount, ...opts }: SwapOptions): Promise<SwapTransaction> {
     const params = new URLSearchParams({
       ...opts,
       buyToken: to,
       sellToken: from,
-      sellAmount: amount.toString(),
-      slippagePercentage: slippage,
-      buyTokenPercentageFee: opts.tokenFee
+      sellAmount: amount.toString()
     })
 
     const res = await fetch(`${this.base}/swap/v1/price?${params.toString()}`)
