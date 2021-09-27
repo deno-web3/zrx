@@ -1,9 +1,9 @@
-# 0x
+# zrx
 
 An unofficial 0x Protocol API client for Deno.
 
 ```ts
-import { Zrx } from 'https://deno.land/x/0x/mod.ts'
+import { Zrx } from 'https://deno.land/x/zrx/mod.ts'
 
 const client = new Zrx('polygon')
 
