@@ -5,20 +5,22 @@ export const endpoints = {
   bsc: 'https://bsc.api.0x.org',
   ropsten: 'https://ropsten.api.0x.org',
   polygon: 'https://polygon.api.0x.org',
-  avax: 'https://avalanche.api.0x.org'
+  avax: 'https://avalanche.api.0x.org',
 }
 
-export type SwapOptions = {
-  from: string
-  to: string
-  amount: number
-} & Partial<{
-  slippage: string
-  takerAddress: string
-  affiliateAddress: string
-  feeRecipient: string
-  tokenFee: string
-}>
+export type SwapOptions =
+  & {
+    from: string
+    to: string
+    amount: number
+  }
+  & Partial<{
+    slippage: string
+    takerAddress: string
+    affiliateAddress: string
+    feeRecipient: string
+    tokenFee: string
+  }>
 
 export type SwapTransaction = {
   price: string
@@ -55,17 +57,12 @@ export class Zrx {
     this.network = network
     this.base = endpoints[network]
   }
-  async tokens(): Promise<{ symbol: string; address: string; name: string; decimals: number }[]> {
-    const res = await fetch(`${this.base}/swap/v1/tokens`)
-
-    return (await res.json()).records
-  }
   async quote({ from, to, amount, ...opts }: SwapOptions): Promise<SwapTransaction> {
     const params = new URLSearchParams({
       ...opts,
       buyToken: to,
       sellToken: from,
-      sellAmount: amount.toString()
+      sellAmount: amount.toString(),
     })
 
     const res = await fetch(`${this.base}/swap/v1/quote?${params.toString()}`)
@@ -91,7 +88,7 @@ export class Zrx {
       ...opts,
       buyToken: to,
       sellToken: from,
-      sellAmount: amount.toString()
+      sellAmount: amount.toString(),
     })
 
     const res = await fetch(`${this.base}/swap/v1/price?${params.toString()}`)

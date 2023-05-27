@@ -1,5 +1,5 @@
-import { describe, expect, it, run } from 'https://deno.land/x/tincan@0.2.2/mod.ts'
-import { Zrx, endpoints } from './mod.ts'
+import { describe, expect, it, run } from 'https://deno.land/x/tincan@1.0.1/mod.ts'
+import { endpoints, Zrx } from './mod.ts'
 
 const zrx = new Zrx()
 
@@ -21,17 +21,6 @@ describe('networks', () => {
 })
 
 describe('API endpoints', () => {
-  it('tokens()', async () => {
-    const tokens = await zrx.tokens()
-
-    expect(Array.isArray(tokens)).toBe(true)
-    const token = tokens[0]
-
-    expect(typeof token.address).toBe('string')
-    expect(typeof token.decimals).toBe('number')
-    expect(typeof token.name).toBe('string')
-    expect(typeof token.symbol).toBe('string')
-  })
   it('quote({ from, to, amount })', async () => {
     zrx.switchNetwork('polygon')
     const quote = await zrx.quote({ from: 'USDC', to: 'USDT', amount: 1_000_000 })

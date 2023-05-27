@@ -10,6 +10,6 @@ const client = new Zrx('polygon')
 const tx = await client.quote({
   from: 'USDC',
   to: 'USDT',
-  amount: 1_000_000 // $1
+  amount: 1_000_000, // $1
 })
 ```
